@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TurismoViotá</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Precarga de fuentes para que no bloqueen el render -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Preload de la imagen principal del hero -->
+    <link rel="preload" as="image" href="ruta/de/tu/imagen-principal.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="main-header">
+    <nav class="main-header__navbar">
+        <!-- Columna izquierda -->
+        <div class="nav-section nav-left">
+            <ul class="main-header__menu">
+                <li><a href="/imperdibles-viota" class="glass-button btn-imperdibles">Imperdibles</a></li>
+                <li><a href="/que-visitar-viota" class="glass-button btn-que-visitar">Qué visitar</a></li>
+                <li><a href="/mapa-viota" class="glass-button btn-mapa">Mapa interactivo</a></li>
+            </ul>
+        </div>
+
+        <!-- Columna central: Logo -->
+        <div class="main-header__logo">
+            <a href="/"><img src="img/logo-viota.png" alt="Logo Turismo Viotá"></a>
+        </div>
+
+        <!-- Columna derecha -->
+        <div class="nav-section nav-right">
+            <ul class="main-header__menu">
+                <li><a href="/gastronomia-viota" class="glass-button btn-gastronomia">Gastronomía</a></li>
+                <li><a href="/hospedaje-viota" class="glass-button btn-hospedaje">Hospedaje</a></li>
+                <li><a href="/guia-de-viaje-viota" class="glass-button btn-guia">Guía de viaje</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero-carousel">
+    <!-- Imágenes -->
+    <div class="carousel-images">
+        <!-- Primera imagen (carga inmediata) -->
+        <img src="img/img1.webp" class="carousel-image active" alt="Paisaje cafetero de Viotá">
+        <!-- Siguientes imágenes lazy-loading -->
+        <img data-src="img/img2.webp" src="img/placeholder.webp" class="carousel-image" alt="Turistas disfrutando en Viotá" loading="lazy">
+        <img data-src="img/img3.webp" src="img/placeholder.webp" class="carousel-image" alt="Cultura y tradición de Viotá" loading="lazy">
+        <img data-src="img/img4.webp" src="img/placeholder.webp" class="carousel-image" alt="Sabores auténticos de Viotá" loading="lazy">
+    </div>
+
+    <!-- Overlay -->
+    <div class="hero-overlay"></div>
+
+    <!-- Texto -->
+    <div class="hero-text">
+        <div class="hero-desc-box">
+            <h1>Viotá, un<br>destino por<br>descubrir</h1>
+            <p>Naturaleza, historia y sabor<br>en el corazón de Cundinamarca</p>
+            <a href="#descubre" class="glass-button hero-button">Explorar</a>
+        </div>
+    </div>
+
+    <!-- Dots -->
+    <div class="carousel-dots">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+    </div>
+
+    <!-- Indicador scroll -->
+    <div class="scroll-indicator">
+        <span></span>
+    </div>
+</section>
+
+<!-- SECCIONES -->
+<section class="section section--clara" id="descubre">
+    <h2>Descubre Viotá</h2>
+    <p>
+        Desde sus cafetales hasta sus cascadas escondidas, Viotá ofrece una experiencia única para los amantes de la naturaleza, la historia y la buena gastronomía.
+    </p>
+</section>
+
+<section class="section section--degradado" id="naturaleza">
+    <h2>Naturaleza y Aventura</h2>
+    <p>
+        Recorre senderos ecológicos, descubre cascadas ocultas y respira el aire puro de los bosques viotunos. Cada paso es una conexión con la tierra.
+    </p>
+</section>
+
+<section class="section section--oscura" id="gastronomia">
+    <h2>Sabores de Viotá</h2>
+    <p>
+        Delicias tradicionales como la arepa de maíz pelao, café recién tostado y jugos de frutas exóticas. ¡Descubre una cocina con identidad!
+    </p>
+</section>
+
+<section class="section section--imagen" id="paisaje">
+    <h2>Paisajes que Enamoran</h2>
+    <p>
+        Montañas, cafetales y atardeceres dorados. Cada rincón de Viotá es una postal viva para quien busca belleza natural sin filtros.
+    </p>
+</section>
+
+<section class="section section--guia" id="guia">
+    <h2>Guía del Viajero</h2>
+    <p>
+        Encuentra tips, rutas seguras, alojamientos recomendados y los mejores lugares para visitar durante tu estadía en Viotá.
+    </p>
+</section>
+
+<section class="section section--nocturna" id="nocturno">
+    <h2>Viotá de Noche</h2>
+    <p>
+        Las noches en Viotá invitan a relajarse bajo cielos estrellados, con conciertos en la plaza y charlas frente a una fogata.
+    </p>
+</section>
+
+<!-- Scripts -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const header = document.querySelector('.main-header');
+        const heroText = document.querySelector('.hero-text');
+        document.documentElement.style.setProperty('--header-height', `${header.offsetHeight}px`);
+        document.body.classList.add('loaded'); // activa la animación
+    });
+
+    window.addEventListener('resize', () => {
+        const header = document.querySelector('.main-header');
+        document.documentElement.style.setProperty('--header-height', `${header.offsetHeight}px`);
+    });
+</script>
+<script src="js/hero.js" defer></script>
+<script src="js/header.js" defer></script>
+<script src="js/main.js" defer></script>
+</body>
+</html>
