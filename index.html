@@ -80,14 +80,269 @@
         <span></span>
     </div>
 </section>
+<section class="descubre-section" id="seccion-descubre">
+    <!-- Imagen decorativa: no esencial para el contenido, usar aria-hidden -->
+    <img src="img/hojas-superiores.webp" alt="" class="decoracion-superpuesta" aria-hidden="true" />
 
-<!-- SECCIONES -->
-<section class="section section--clara" id="descubre">
-    <h2>Descubre Viotá</h2>
-    <p>
-        Desde sus cafetales hasta sus cascadas escondidas, Viotá ofrece una experiencia única para los amantes de la naturaleza, la historia y la buena gastronomía.
-    </p>
+    <div class="descubre-carousel">
+
+        <!-- Slide 1 (activo, cargado al inicio) -->
+        <div class="descubre-slide active">
+            <div class="image-wrapper">
+                <img src="img/img1.webp" alt="Vista natural de las cascadas de Viotá" class="descubre-image" loading="lazy" />
+            </div>
+            <div class="descubre-card visible">
+                <h2 class="descubre-title">Cascadas de Viotá</h2>
+                <p class="descubre-text">Un recorrido natural donde el agua y la selva se encuentran en un espectáculo visual.</p>
+                <button class="descubre-btn">Explorar</button>
+            </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="descubre-slide">
+            <div class="image-wrapper">
+                <img data-src="img/img2.webp" alt="Taza de café artesanal de Viotá" class="descubre-image" />
+            </div>
+            <div class="descubre-card">
+                <h2 class="descubre-title">Café de altura</h2>
+                <p class="descubre-text">Siente el aroma y sabor del mejor café artesanal de la región.</p>
+                <button class="descubre-btn" aria-label="Saber más sobre café de altura">Saber más</button>
+            </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="descubre-slide">
+            <div class="image-wrapper">
+                <img data-src="img/img3.webp" alt="Plato típico con ingredientes frescos" class="descubre-image" />
+            </div>
+            <div class="descubre-card">
+                <h2 class="descubre-title">Gastronomía local</h2>
+                <p class="descubre-text">Descubre los sabores auténticos de Viotá con ingredientes frescos y recetas tradicionales.</p>
+                <button class="descubre-btn" aria-label="Ver menú de gastronomía local">Ver menú</button>
+            </div>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="descubre-slide">
+            <div class="image-wrapper">
+                <img data-src="img/img4.webp" alt="Mujer mayor narrando historias culturales en Viotá" class="descubre-image" />
+            </div>
+            <div class="descubre-card">
+                <h2 class="descubre-title">Historia y cultura</h2>
+                <p class="descubre-text">Explora el patrimonio cultural de Viotá, lleno de historias que aún viven.</p>
+                <button class="descubre-btn" aria-label="Conocer más sobre la historia de Viotá">Conocer más</button>
+            </div>
+        </div>
+
+        <!-- Flechas navegación -->
+        <button class="descubre-prev descubre-btn-nav" aria-label="Anterior slide"></button>
+        <button class="descubre-next descubre-btn-nav" aria-label="Siguiente slide"></button>
+
+    </div>
 </section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const slides = document.querySelectorAll(".descubre-slide");
+        const prevBtn = document.querySelector(".descubre-prev");
+        const nextBtn = document.querySelector(".descubre-next");
+        const decoracion = document.querySelector(".decoracion-superpuesta");
+        const decorContainer = document.querySelector("#seccion-descubre");
+
+        let currentIndex = 0;
+        let isAnimating = false;
+        const duration = 800;
+        const easing = "ease";
+
+        function loadSlideImage(index) {
+            const slide = slides[index];
+            const img = slide.querySelector("img");
+            if (img && img.dataset.src && !img.src) {
+                img.src = img.dataset.src;
+            }
+        }
+
+        function animateTransition(nextIndex, direction = "right") {
+            if (isAnimating || nextIndex === currentIndex) return;
+            isAnimating = true;
+
+            const current = slides[currentIndex];
+            const next = slides[nextIndex];
+
+            const currentCard = current.querySelector(".descubre-card");
+            const currentImage = current.querySelector(".image-wrapper");
+            const nextCard = next.querySelector(".descubre-card");
+            const nextImage = next.querySelector(".image-wrapper");
+
+            const offset = direction === "right" ? -1 : 1;
+            const exitOffset = `${150 * offset}%`;
+            const tripleExit = `${450 * offset}%`;
+            const entryOffset = `${-450 * offset}%`;
+
+            loadSlideImage(nextIndex);
+
+            // Preparar slide entrante
+            Object.assign(nextCard.style, {
+                transition: "none",
+                transform: `translate(${entryOffset}, -50%)`,
+                opacity: "0"
+            });
+            Object.assign(nextImage.style, {
+                transition: "none",
+                transform: `translateX(${entryOffset})`
+            });
+
+            next.classList.add("active");
+
+            // Iniciar animación
+            setTimeout(() => {
+                const transition = `transform ${duration}ms ${easing}, opacity ${duration}ms ${easing}`;
+
+                currentCard.style.transition = transition;
+                currentCard.style.transform = `translate(${tripleExit}, -50%)`;
+                currentCard.style.opacity = "0";
+
+                currentImage.style.transition = `transform ${duration}ms ${easing}`;
+                currentImage.style.transform = `translateX(${exitOffset})`;
+
+                nextCard.style.transition = transition;
+                nextCard.style.transform = `translate(-40%, -50%)`;
+                nextCard.style.opacity = "1";
+
+                nextImage.style.transition = `transform ${duration}ms ${easing}`;
+                nextImage.style.transform = `translateX(15%)`;
+            }, 20);
+
+            // Finalizar animación
+            setTimeout(() => {
+                current.classList.remove("active");
+                Object.assign(currentCard.style, {
+                    transition: "none",
+                    transform: "translate(-100%, -50%)",
+                    opacity: "0"
+                });
+                isAnimating = false;
+            }, duration + 50);
+
+            next.style.pointerEvents = 'auto';
+            current.style.pointerEvents = 'none';
+
+            currentIndex = nextIndex;
+        }
+
+        // Botones de navegación
+        nextBtn.addEventListener("click", () => {
+            animateTransition((currentIndex + 1) % slides.length, "right");
+        });
+
+        prevBtn.addEventListener("click", () => {
+            animateTransition((currentIndex - 1 + slides.length) % slides.length, "left");
+        });
+
+        // Mostrar el primer slide al cargar
+        slides.forEach((slide, index) => {
+            const card = slide.querySelector(".descubre-card");
+            if (index === currentIndex) {
+                slide.classList.add("active");
+                card.style.opacity = "1";
+            } else {
+                slide.classList.remove("active");
+                card.style.opacity = "0";
+            }
+        });
+
+        // Animación de botones cuando están en viewport
+        const animables = document.querySelectorAll(".descubre-prev, .descubre-next");
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                entry.target.classList.toggle("animando", entry.isIntersecting);
+            });
+        }, {threshold: 0.1});
+
+        animables.forEach(el => observer.observe(el));
+
+        // Repetir animación decorativa al entrar a la sección
+        if (decoracion && decorContainer) {
+            const decorObserver = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        decoracion.classList.remove("visible");
+                        void decoracion.offsetWidth; // reflow
+                        decoracion.classList.add("visible");
+                    }
+                });
+            }, {threshold: 0.4});
+
+            decorObserver.observe(decorContainer);
+        }
+
+        // Precarga por hover
+        slides.forEach((slide, i) => {
+            slide.addEventListener("mouseenter", () => {
+                if (i !== currentIndex) {
+                    setTimeout(() => loadSlideImage(i), 150);
+                }
+            });
+        });
+    });
+    document.addEventListener("DOMContentLoaded", () => {
+        // Agregar manejo de eventos para los botones
+        const buttons = document.querySelectorAll('.descubre-btn');
+
+        buttons.forEach(button => {
+            // Manejar eventos táctiles
+            button.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                this.classList.add('active');
+            });
+
+            button.addEventListener('touchend', function() {
+                this.classList.remove('active');
+            });
+
+            // Manejar eventos del mouse
+            button.addEventListener('mouseenter', function() {
+                this.classList.add('hover');
+            });
+
+            button.addEventListener('mouseleave', function() {
+                this.classList.remove('hover');
+                this.classList.remove('active');
+            });
+        });
+    });
+
+
+
+    document.querySelectorAll('.descubre-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            console.log('Botón clickeado');
+        });
+
+        btn.addEventListener('mouseenter', () => {
+            console.log('Mouse enter');
+        });
+    });
+
+
+
+
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+        const botones = document.querySelectorAll(".descubre-btn");
+
+        botones.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        console.log("Botón clickeado:", btn);
+        // Aquí puedes abrir un modal, navegar, etc.
+        alert("Próximamente más detalles.");
+    });
+    });
+    });
+</script>
+
 
 <section class="section section--degradado" id="naturaleza">
     <h2>Naturaleza y Aventura</h2>
@@ -129,6 +384,7 @@
     document.addEventListener('DOMContentLoaded', () => {
         const header = document.querySelector('.main-header');
         const heroText = document.querySelector('.hero-text');
+        console.log("Página cargada"); // <- AÑADE ESTO
         document.documentElement.style.setProperty('--header-height', `${header.offsetHeight}px`);
         document.body.classList.add('loaded'); // activa la animación
     });

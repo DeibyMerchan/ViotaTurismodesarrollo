@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener('load', () => {
         setTimeout(() => {
             header.classList.add('loaded'); // Activa la animación de entrada (slideDown)
-        }, 2200); // Pequeño retraso para que aparezca sincronizado con el hero
+        }, 1000); // Pequeño retraso para que aparezca sincronizado con el hero
     });
 
     /** === 2. Efecto glow dinámico en el menú === */
